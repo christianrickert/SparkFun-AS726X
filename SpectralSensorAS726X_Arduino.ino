@@ -80,7 +80,7 @@ void loop() {
     // begin of data transmission
     sensor.enableIndicator();
     sign.asChar = '\r';
-    Serial.write(sign.asChar);
+    Serial.write(sign.asByte, c);
 
     // perform data transmission
     for (int i = 0; i < v; i++) {
