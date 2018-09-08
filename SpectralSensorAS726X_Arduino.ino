@@ -87,12 +87,11 @@ void loop() {
       number.asFloat = values[i];
       Serial.write(number.asByte, f);
     }
-    Serial.println();
 
     // end of data transmission
     sign.asChar = '\n';
     Serial.write(sign.asByte, c);
-    Serial.flush();              // wait for outgoing transmission
+    Serial.flush();                             // wait for outgoing transmission
 
     // waiting for response
     while (Serial.available() < c)
