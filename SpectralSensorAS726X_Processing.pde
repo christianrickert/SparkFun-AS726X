@@ -85,6 +85,7 @@ void receiveSensorData() {
 
 }
 
+
 void setup() {
 
   while (serialPort.available() > 0)  // clear (pull) read buffer
