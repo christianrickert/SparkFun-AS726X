@@ -19,7 +19,7 @@
 
 
 // imports
-#include "AS726X.h"
+#include <AS726X.h>
 
 
 // constants
@@ -66,41 +66,41 @@ void setup() {
 
 void loop() {
 
-  if (sensor.dataAvailable()) {
+  while (not sensor.dataAvailable())
+    delay(1);
 
-    // read sensor values from memory banks
-    values[0] = sensor.getCalibratedViolet();   // 450 nm +/- 20 nm (HWHM)
-    values[1] = sensor.getCalibratedBlue();     // 500 nm +/- 20 nm (HWHM)
-    values[2] = sensor.getCalibratedGreen();    // 550 nm +/- 20 nm (HWHM)
-    values[3] = sensor.getCalibratedYellow();   // 570 nm +/- 20 nm (HWHM)
-    values[4] = sensor.getCalibratedOrange();   // 600 nm +/- 20 nm (HWHM)
-    values[5] = sensor.getCalibratedRed();      // 650 nm +/- 20 nm (HWHM)
-    values[6] = sensor.getTemperature();        // assuming -40°C -> 85°C
+  // read sensor values from memory banks
+  values[0] = sensor.getCalibratedViolet();   // 450 nm +/- 20 nm (HWHM)
+  values[1] = sensor.getCalibratedBlue();     // 500 nm +/- 20 nm (HWHM)
+  values[2] = sensor.getCalibratedGreen();    // 550 nm +/- 20 nm (HWHM)
+  values[3] = sensor.getCalibratedYellow();   // 570 nm +/- 20 nm (HWHM)
+  values[4] = sensor.getCalibratedOrange();   // 600 nm +/- 20 nm (HWHM)
+  values[5] = sensor.getCalibratedRed();      // 650 nm +/- 20 nm (HWHM)
+  values[6] = sensor.getTemperature();        // assuming -40°C -> 85°C
 
-    // begin of data transmission
-    sensor.enableIndicator();
-    sign.asChar = '\r';
-    Serial.write(sign.asByte, c);
+  // begin of data transmission
+  sensor.enableIndicator();
+  sign.asChar = '\r';
+  Serial.write(sign.asByte, c);
 
-    // perform data transmission
-    for (int i = 0; i < v; i++) {
-      number.asFloat = values[i];
-      Serial.write(number.asByte, f);
-    }
-
-    // end of data transmission
-    sign.asChar = '\n';
-    Serial.write(sign.asByte, c);
-    Serial.flush();                             // wait for outgoing transmission
-
-    // waiting for response
-    while (Serial.available() < c)
-      delay(1);
-
-    // validating response
-    sign.asChar = '\t';
-    if (Serial.read() == sign.asInt)
-      sensor.disableIndicator();
+  // perform data transmission
+  for (int i = 0; i < v; i++) {
+    number.asFloat = values[i];
+    Serial.write(number.asByte, f);
   }
+
+  // end of data transmission
+  sign.asChar = '\n';
+  Serial.write(sign.asByte, c);
+  Serial.flush();                             // wait for outgoing transmission
+
+  // waiting for response
+  while (Serial.available() < c)
+    delay(1);
+
+  // validating response
+  sign.asChar = '\t';
+  if (Serial.read() == sign.asInt)
+    sensor.disableIndicator();
 
 }
