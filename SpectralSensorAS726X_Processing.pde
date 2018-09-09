@@ -29,9 +29,9 @@ ControlP5 cp5;
 static final int cr = 13;           // DEC integer value of the carriage return character
 static final int lf = 10;           // DEC integer value of the line feed character
 static final int tb = 9;            // DEC integer value of the tabulator character
-static final int nf = 4;            // number of bytes expected per data value
+static final int bf = 4;            // number of bytes expected per data value
 static final int nv = 7;            // number of expected values per data transmission
-static final int nb = nf * nv + 2;  // number of bytes expected per data transmission (handshake + data)
+static final int nb = bf * nv + 2;  // number of bytes expected per data transmission (handshake + data)
 
 
 // variables
@@ -69,12 +69,12 @@ void receiveSensorData() {
 
   // begin data processing, end with line feed character
   serialPort.readBytesUntil(lf, inBuffer);
-  for (int b=0; b<(nb-2); b+=nf) {
+  for (int b=0; b<(nb-2); b+=bf) {
     value = ByteBuffer.wrap(inBuffer).order(ByteOrder.LITTLE_ENDIAN).getFloat(b);
-    if (value > cp5.getController(Sliders[b/nf]).getMax())
+    if (value > cp5.getController(Sliders[b/bf]).getMax())
       for (int s=0; s<(nv-1); s+=1)
         cp5.getController(Sliders[s]).setMax(value);
-    cp5.getController(Sliders[b/nf]).setValue(value);
+    cp5.getController(Sliders[b/bf]).setValue(value);
     print(value); print(" ");
     }
   println();
