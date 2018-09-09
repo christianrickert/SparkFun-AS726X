@@ -69,7 +69,6 @@ void receiveSensorData() {
 
   // begin data processing, end with line feed character
   serialPort.readBytesUntil(lf, inBuffer);
-
   for (int b=0; b<(nb-2); b+=nf) {
     value = ByteBuffer.wrap(inBuffer).order(ByteOrder.LITTLE_ENDIAN).getFloat(b);
     if (value > cp5.getController(Sliders[b/nf]).getMax())
