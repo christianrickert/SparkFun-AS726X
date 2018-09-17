@@ -20,6 +20,7 @@
 
 // imports
 #include <AS726X.h>
+#include <Wire.h>
 
 
 // constants
@@ -49,6 +50,10 @@ float values[v] = {0};  // all sensor readings
 
 
 void setup() {
+
+  // configure I2C
+  Wire.begin();
+  Wire.setClock(400000)          // fast mode, standard: 100k
 
   // configure sensor
   sensor.begin();
